@@ -51,7 +51,7 @@
             img.onwheel = function(event) {
                 event.preventDefault();
                 scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(.70, scale), 4);
+                scale = Math.min(Math.max(.450, scale), 4);
                 img.style.transform = `scale(${scale})`;
             };
 
