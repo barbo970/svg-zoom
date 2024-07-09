@@ -25,7 +25,7 @@
         }
         img {
             cursor: move;
-            transition: transform 0.1s;
+            transition: transform 0.9s;
         }
     </style>
 </head>
@@ -38,7 +38,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.02; // Reducimos la velocidad del zoom para que sea más suave
+            const zoomSpeed = 0.03;
 
             img.onwheel = function(event) {
                 event.preventDefault();
