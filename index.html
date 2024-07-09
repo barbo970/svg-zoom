@@ -17,8 +17,8 @@
         #image-container {
             overflow: hidden;
             border: 1px solid #ccc;
-            width: 30%;
-            height: 30%;
+            width: 80%;
+            height: 80%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,7 +43,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.03; // Reducimos la velocidad del zoom para que sea más suave
+            const zoomSpeed = 0.01; // Reducimos la velocidad del zoom para que sea más suave
             let isDragging = false;
             let startX, startY;
 
