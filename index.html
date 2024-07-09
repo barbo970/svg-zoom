@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagen con Zoom</title>
+    <title>Imagen con Zoom Gradual</title>
     <style>
         body {
             margin: 0;
@@ -12,25 +12,33 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            overflow: hidden;
         }
-        img {
+        #image-container {
+            overflow: hidden;
             border: 1px solid #ccc;
             width: 80%;
-            height: auto;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        img {
             cursor: move;
+            transition: transform 0.2s;
         }
     </style>
 </head>
 <body>
     <div id="image-container">
-        <img id="zoom-image" src="imagen.jpg" alt="Imagen con Zoom" />
+        <img id="zoom-image" src="imagen.jpg" alt="Imagen con Zoom Gradual" />
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.1;
+            const zoomSpeed = 0.05;
 
             img.onwheel = function(event) {
                 event.preventDefault();
