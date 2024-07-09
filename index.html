@@ -26,7 +26,7 @@
         }
         img {
             cursor: grab;
-            transition: transform 0.1s;
+            transition: transform 0.5s;
             user-select: none; /* Evita que se seleccionen partes de la imagen */
         }
         img:active {
@@ -43,7 +43,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.05; // Reducimos la velocidad del zoom para que sea más suave
+            const zoomSpeed = 0.1; // Reducimos la velocidad del zoom para que sea más suave
             let isDragging = false;
             let startX, startY;
 
