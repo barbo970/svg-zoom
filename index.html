@@ -43,7 +43,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.01; // Reducimos la velocidad del zoom para que sea más suave
+            const zoomSpeed = 0.005; // Reducimos la velocidad del zoom para que sea más suave
             let isDragging = false;
             let startX, startY;
 
@@ -51,7 +51,7 @@
             img.onwheel = function(event) {
                 event.preventDefault();
                 scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(.50, scale), 4);
+                scale = Math.min(Math.max(.80, scale), 4);
                 img.style.transform = `scale(${scale})`;
             };
 
