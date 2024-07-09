@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagen con Zoom</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        img {
+            border: 1px solid #ccc;
+            width: 80%;
+            height: auto;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="image-container">
+        <img id="zoom-image" src="imagen.jpg" alt="Imagen con Zoom" />
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const img = document.getElementById('zoom-image');
+            let scale = 1;
+            const zoomSpeed = 0.1;
+
+            img.onwheel = function(event) {
+                event.preventDefault();
+                scale += event.deltaY * -zoomSpeed;
+                scale = Math.min(Math.max(.125, scale), 4);
+                img.style.transform = `scale(${scale})`;
+            };
+        });
+    </script>
+</body>
+</html>
