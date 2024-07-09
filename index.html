@@ -17,8 +17,8 @@
         #image-container {
             overflow: hidden;
             border: 1px solid #ccc;
-            width: 100%;
-            height: 100%;
+            width: 80%;
+            height: 80%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,7 +43,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.8; // Reducimos la velocidad del zoom para que sea más suave
+            const zoomSpeed = 0.01; // Reducimos la velocidad del zoom para que sea más suave
             let isDragging = false;
             let startX, startY;
 
@@ -51,7 +51,7 @@
             img.onwheel = function(event) {
                 event.preventDefault();
                 scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(.150, scale), 5);
+                scale = Math.min(Math.max(.125, scale), 4);
                 img.style.transform = `scale(${scale})`;
             };
 
