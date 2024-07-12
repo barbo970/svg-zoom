@@ -50,6 +50,7 @@
             let isDragging = false;
             let startX, startY;
             let imgX = 0, imgY = 0; // Coordenadas iniciales de la imagen
+            const minScale = 0.65; // Valor mínimo para el zoom
 
             // Obtener las coordenadas del mouse relativas a la imagen
             function getMousePos(event) {
@@ -60,6 +61,13 @@
                 };
             }
 
+            // Centro la imagen
+            function centerImage() {
+                imgX = (img.parentElement.clientWidth - img.clientWidth) / 2;
+                imgY = (img.parentElement.clientHeight - img.clientHeight) / 2;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+            }
+
             // Zoom con la rueda del ratón
             img.onwheel = function(event) {
                 event.preventDefault();
@@ -67,14 +75,17 @@
 
                 const prevScale = scale;
                 scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(.65, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
+                scale = Math.min(Math.max(minScale, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
 
-                // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
-                const deltaScale = scale - prevScale;
-                imgX -= mousePos.x * deltaScale;
-                imgY -= mousePos.y * deltaScale;
-
-                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+                if (scale === minScale) {
+                    centerImage();
+                } else {
+                    // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
+                    const deltaScale = scale - prevScale;
+                    imgX -= mousePos.x * deltaScale;
+                    imgY -= mousePos.y * deltaScale;
+                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+                }
             };
 
             // Movimiento con el cursor
@@ -102,6 +113,9 @@
                 isDragging = false;
                 img.style.cursor = 'grab';
             });
+
+            // Centrar la imagen al cargar
+            centerImage();
         });
     </script>
 </body>
