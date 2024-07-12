@@ -82,8 +82,8 @@
                 } else {
                     // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
                     const rect = img.getBoundingClientRect();
-                    const offsetX = (mousePos.x - rect.width / 2) * (scale - prevScale);
-                    const offsetY = (mousePos.y - rect.height / 2) * (scale - prevScale);
+                    const offsetX = (mousePos.x - rect.width / 2) * (scale - prevScale) / scale;
+                    const offsetY = (mousePos.y - rect.height / 2) * (scale - prevScale) / scale;
                     imgX -= offsetX;
                     imgY -= offsetY;
                     img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
@@ -122,4 +122,3 @@
     </script>
 </body>
 </html>
-
