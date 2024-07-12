@@ -61,10 +61,10 @@
                 };
             }
 
-            // Centro la imagen
+            // Centrar la imagen
             function centerImage() {
-                imgX = (img.parentElement.clientWidth - img.clientWidth) / 2;
-                imgY = (img.parentElement.clientHeight - img.clientHeight) / 2;
+                imgX = (img.parentElement.clientWidth - img.clientWidth * scale) / 2;
+                imgY = (img.parentElement.clientHeight - img.clientHeight * scale) / 2;
                 img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
             }
 
@@ -74,49 +74,4 @@
                 const mousePos = getMousePos(event);
 
                 const prevScale = scale;
-                scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(minScale, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
-
-                if (scale === minScale) {
-                    centerImage();
-                } else {
-                    // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
-                    const deltaScale = scale - prevScale;
-                    imgX -= mousePos.x * deltaScale;
-                    imgY -= mousePos.y * deltaScale;
-                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
-                }
-            };
-
-            // Movimiento con el cursor
-            img.addEventListener('mousedown', function(event) {
-                isDragging = true;
-                startX = event.clientX - imgX;
-                startY = event.clientY - imgY;
-                img.style.cursor = 'grabbing';
-            });
-
-            img.addEventListener('mousemove', function(event) {
-                if (isDragging) {
-                    imgX = event.clientX - startX;
-                    imgY = event.clientY - startY;
-                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
-                }
-            });
-
-            img.addEventListener('mouseup', function() {
-                isDragging = false;
-                img.style.cursor = 'grab';
-            });
-
-            img.addEventListener('mouseleave', function() {
-                isDragging = false;
-                img.style.cursor = 'grab';
-            });
-
-            // Centrar la imagen al cargar
-            centerImage();
-        });
-    </script>
-</body>
-</html>
+          
