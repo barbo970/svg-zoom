@@ -29,8 +29,8 @@
             cursor: grab;
             transition: transform 0.1s;
             user-select: none; /* Evita que se seleccionen partes de la imagen */
-            width: 100%;
-            height: auto;
+            max-width: 100%;
+            max-height: 100%;
         }
         img:active {
             cursor: grabbing;
@@ -49,28 +49,47 @@
             const zoomSpeed = 0.005; // Disminuye la velocidad del zoom para que sea más suave
             let isDragging = false;
             let startX, startY;
+            let imgX = 0, imgY = 0; // Coordenadas iniciales de la imagen
+
+            // Obtener las coordenadas del mouse relativas a la imagen
+            function getMousePos(event) {
+                const rect = img.getBoundingClientRect();
+                return {
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                };
+            }
 
             // Zoom con la rueda del ratón
             img.onwheel = function(event) {
                 event.preventDefault();
+                const mousePos = getMousePos(event);
+
+                const prevScale = scale;
                 scale += event.deltaY * -zoomSpeed;
                 scale = Math.min(Math.max(.65, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
-                img.style.transform = `scale(${scale})`;
+
+                // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
+                const deltaScale = scale - prevScale;
+                imgX -= mousePos.x * deltaScale;
+                imgY -= mousePos.y * deltaScale;
+
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
             };
 
             // Movimiento con el cursor
             img.addEventListener('mousedown', function(event) {
                 isDragging = true;
-                startX = event.clientX - img.offsetLeft;
-                startY = event.clientY - img.offsetTop;
+                startX = event.clientX - imgX;
+                startY = event.clientY - imgY;
                 img.style.cursor = 'grabbing';
             });
 
             img.addEventListener('mousemove', function(event) {
                 if (isDragging) {
-                    let x = event.clientX - startX;
-                    let y = event.clientY - startY;
-                    img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+                    imgX = event.clientX - startX;
+                    imgY = event.clientY - startY;
+                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
                 }
             });
 
