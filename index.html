@@ -12,16 +12,16 @@
             height: 100%;
             overflow: hidden;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             background-color: #f0f0f0;
         }
         #image-container {
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             position: relative;
             overflow: hidden;
         }
@@ -61,10 +61,10 @@
                 };
             }
 
-            // Centrar la imagen
-            function centerImage() {
-                imgX = (img.parentElement.clientWidth - img.clientWidth * scale) / 2;
-                imgY = (img.parentElement.clientHeight - img.clientHeight * scale) / 2;
+            // Posicionar la imagen en la parte superior izquierda
+            function positionImageTopLeft() {
+                imgX = 0;
+                imgY = 0;
                 img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
             }
 
@@ -78,7 +78,7 @@
                 scale = Math.min(Math.max(minScale, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
 
                 if (scale === minScale) {
-                    centerImage();
+                    positionImageTopLeft();
                 } else {
                     // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
                     const rect = img.getBoundingClientRect();
@@ -116,8 +116,8 @@
                 img.style.cursor = 'grab';
             });
 
-            // Centrar la imagen al cargar
-            centerImage();
+            // Posicionar la imagen en la parte superior izquierda al cargar
+            positionImageTopLeft();
         });
     </script>
 </body>
