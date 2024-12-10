@@ -3,41 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagen con Zoom</title>
+    <title>Imagen con Zoom Gradual y Movimiento</title>
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            justify-content: flex-start;
+            align-items: flex-start;
             background-color: #f0f0f0;
         }
+        #image-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
         img {
-            border: 1px solid #ccc;
-            width: 80%;
-            height: auto;
-            cursor: move;
+            cursor: grab;
+            transition: transform 0.1s;
+            user-select: none; /* Evita que se seleccionen partes de la imagen */
+            max-width: 100%;
+            max-height: 100%;
+        }
+        img:active {
+            cursor: grabbing;
         }
     </style>
 </head>
 <body>
     <div id="image-container">
-        <img id="zoom-image" src="imagen.jpg" alt="Imagen con Zoom" />
+        <img id="zoom-image" src="imagen.jpg" alt="Imagen con Zoom Gradual y Movimiento" />
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const img = document.getElementById('zoom-image');
             let scale = 1;
-            const zoomSpeed = 0.1;
+            const zoomSpeed = 0.005; // Disminuye la velocidad del zoom para que sea más suave
+            let isDragging = false;
+            let startX, startY;
+            let imgX = 0, imgY = 0; // Coordenadas iniciales de la imagen
+            const minScale = 0.65; // Valor mínimo para el zoom
 
+            // Obtener las coordenadas del mouse relativas a la imagen
+            function getMousePos(event) {
+                const rect = img.getBoundingClientRect();
+                return {
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                };
+            }
+
+            // Posicionar la imagen en la parte superior izquierda
+            function positionImageTopLeft() {
+                imgX = 0;
+                imgY = 0;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+            }
+
+            // Zoom con la rueda del ratón
             img.onwheel = function(event) {
                 event.preventDefault();
+                const mousePos = getMousePos(event);
+
+                const prevScale = scale;
                 scale += event.deltaY * -zoomSpeed;
-                scale = Math.min(Math.max(.125, scale), 4);
-                img.style.transform = `scale(${scale})`;
+                scale = Math.min(Math.max(minScale, scale), 4); // Ajusta el valor mínimo para un mayor alejamiento
+
+                if (scale === minScale) {
+                    positionImageTopLeft();
+                } else {
+                    // Calcular el nuevo desplazamiento para centrar el zoom en la posición del mouse
+                    const rect = img.getBoundingClientRect();
+                    const offsetX = (mousePos.x - rect.width / 2) * (scale - prevScale) / scale;
+                    const offsetY = (mousePos.y - rect.height / 2) * (scale - prevScale) / scale;
+                    imgX -= offsetX;
+                    imgY -= offsetY;
+                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+                }
             };
+
+            // Movimiento con el cursor
+            img.addEventListener('mousedown', function(event) {
+                isDragging = true;
+                startX = event.clientX - imgX;
+                startY = event.clientY - imgY;
+                img.style.cursor = 'grabbing';
+            });
+
+            img.addEventListener('mousemove', function(event) {
+                if (isDragging) {
+                    imgX = event.clientX - startX;
+                    imgY = event.clientY - startY;
+                    img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+                }
+            });
+
+            img.addEventListener('mouseup', function() {
+                isDragging = false;
+                img.style.cursor = 'grab';
+            });
+
+            img.addEventListener('mouseleave', function() {
+                isDragging = false;
+                img.style.cursor = 'grab';
+            });
+
+            // Posicionar la imagen en la parte superior izquierda al cargar
+            positionImageTopLeft();
         });
     </script>
 </body>
