@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagen Fija</title>
+    <title>Línea Horizontal Dinámica</title>
     <style>
         body, html {
             margin: 0;
@@ -11,30 +11,19 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
         }
-        #image-container {
+        #line-container {
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             position: relative;
-            overflow: hidden;
+            background-color: #f0f0f0; /* Cambia el fondo según tu diseño */
         }
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
-        }
-    </style>
-</head>
-<body>
-    <div id="image-container">
-        <img src="imagen.jpg" alt="Imagen Fija" />
-    </div>
-</body>
-</html>
+        #line {
+            position: absolute;
+            left: 50%; /* Línea inicialmente centrada horizontalmente */
+            top: 0;
+            height: 
