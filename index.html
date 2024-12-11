@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Línea Horizontal Dinámica</title>
+    <title>Imagen Fija con Línea Dinámica</title>
     <style>
         body, html {
             margin: 0;
@@ -12,23 +12,28 @@
             height: 100%;
             overflow: hidden;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
-        #line-container {
+        #image-container {
             width: 100%;
             height: 100%;
             position: relative;
-            background-color: #f0f0f0; /* Cambia el fondo según tu diseño */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
         }
         #line {
             position: absolute;
-            left: 50%; /* Línea inicialmente centrada horizontalmente */
-            top: 0;
-            height: 100%;
-            width: 2px;
+            left: 0;
+            width: 100%;
+            height: 2px; /* Grosor de la línea */
             background-color: red; /* Color de la línea */
+            top: 50%; /* Inicialmente centrada verticalmente */
             cursor: pointer;
         }
         .controls {
@@ -46,34 +51,38 @@
     </style>
 </head>
 <body>
-    <div id="line-container">
+    <div id="image-container">
+        <!-- Imagen fija -->
+        <img src="imagen.jpg" alt="Imagen Fija" />
+        <!-- Línea dinámica -->
         <div id="line"></div>
+        <!-- Controles para mover la línea -->
         <div class="controls">
-            <button id="left">Mover Izquierda</button>
-            <button id="right">Mover Derecha</button>
+            <button id="up">Mover Arriba</button>
+            <button id="down">Mover Abajo</button>
         </div>
     </div>
 
     <script>
         const line = document.getElementById('line');
-        const container = document.getElementById('line-container');
-        const leftButton = document.getElementById('left');
-        const rightButton = document.getElementById('right');
-        let leftPosition = 50; // Posición inicial en porcentaje
+        const container = document.getElementById('image-container');
+        const upButton = document.getElementById('up');
+        const downButton = document.getElementById('down');
+        let topPosition = 50; // Posición inicial en porcentaje
 
         // Función para mover la línea
         function moveLine(direction) {
-            if (direction === 'left' && leftPosition > 0) {
-                leftPosition -= 5; // Mover hacia la izquierda
-            } else if (direction === 'right' && leftPosition < 100) {
-                leftPosition += 5; // Mover hacia la derecha
+            if (direction === 'up' && topPosition > 0) {
+                topPosition -= 5; // Mover hacia arriba
+            } else if (direction === 'down' && topPosition < 100) {
+                topPosition += 5; // Mover hacia abajo
             }
-            line.style.left = `${leftPosition}%`;
+            line.style.top = `${topPosition}%`;
         }
 
         // Eventos para los botones
-        leftButton.addEventListener('click', () => moveLine('left'));
-        rightButton.addEventListener('click', () => moveLine('right'));
+        upButton.addEventListener('click', () => moveLine('up'));
+        downButton.addEventListener('click', () => moveLine('down'));
 
         // Permitir mover la línea con arrastre del ratón
         let isDragging = false;
@@ -89,9 +98,9 @@
         window.addEventListener('mousemove', (event) => {
             if (isDragging) {
                 const rect = container.getBoundingClientRect();
-                const mouseX = event.clientX - rect.left;
-                leftPosition = Math.max(0, Math.min(100, (mouseX / rect.width) * 100));
-                line.style.left = `${leftPosition}%`;
+                const mouseY = event.clientY - rect.top;
+                topPosition = Math.max(0, Math.min(100, (mouseY / rect.height) * 100));
+                line.style.top = `${topPosition}%`;
             }
         });
     </script>
