@@ -26,4 +26,74 @@
             position: absolute;
             left: 50%; /* Línea inicialmente centrada horizontalmente */
             top: 0;
-            height: 
+            height: 100%;
+            width: 2px;
+            background-color: red; /* Color de la línea */
+            cursor: pointer;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="line-container">
+        <div id="line"></div>
+        <div class="controls">
+            <button id="left">Mover Izquierda</button>
+            <button id="right">Mover Derecha</button>
+        </div>
+    </div>
+
+    <script>
+        const line = document.getElementById('line');
+        const container = document.getElementById('line-container');
+        const leftButton = document.getElementById('left');
+        const rightButton = document.getElementById('right');
+        let leftPosition = 50; // Posición inicial en porcentaje
+
+        // Función para mover la línea
+        function moveLine(direction) {
+            if (direction === 'left' && leftPosition > 0) {
+                leftPosition -= 5; // Mover hacia la izquierda
+            } else if (direction === 'right' && leftPosition < 100) {
+                leftPosition += 5; // Mover hacia la derecha
+            }
+            line.style.left = `${leftPosition}%`;
+        }
+
+        // Eventos para los botones
+        leftButton.addEventListener('click', () => moveLine('left'));
+        rightButton.addEventListener('click', () => moveLine('right'));
+
+        // Permitir mover la línea con arrastre del ratón
+        let isDragging = false;
+
+        line.addEventListener('mousedown', () => {
+            isDragging = true;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        window.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const rect = container.getBoundingClientRect();
+                const mouseX = event.clientX - rect.left;
+                leftPosition = Math.max(0, Math.min(100, (mouseX / rect.width) * 100));
+                line.style.left = `${leftPosition}%`;
+            }
+        });
+    </script>
+</body>
+</html>
