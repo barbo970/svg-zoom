@@ -69,14 +69,16 @@
         const upButton = document.getElementById('up');
         const downButton = document.getElementById('down');
         let topPosition = 50; // Posición inicial en porcentaje
+        const moveStep = 2; // Distancia de movimiento en porcentaje (ajústalo según tus necesidades)
 
         // Función para mover la línea
         function moveLine(direction) {
             if (direction === 'up' && topPosition > 0) {
-                topPosition -= 5; // Mover hacia arriba
+                topPosition -= moveStep; // Mover hacia arriba
             } else if (direction === 'down' && topPosition < 100) {
-                topPosition += 5; // Mover hacia abajo
+                topPosition += moveStep; // Mover hacia abajo
             }
+            topPosition = Math.max(0, Math.min(100, topPosition)); // Asegurarse de que no se salga de los límites
             line.style.top = `${topPosition}%`;
         }
 
